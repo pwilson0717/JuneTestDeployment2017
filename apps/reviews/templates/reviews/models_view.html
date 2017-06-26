@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Models View</title>
+</head>
+<body>
+	<table>
+		<caption>Users</caption>
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>name</th>
+				<th>alias</th>
+				<th>email</th>
+				<th>authored_reviews</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in all_users %}
+				<tr>
+					<td><a href="{% url 'reviews:view_user' id=user.id %}">{{ user.id }}</a></td>
+					<td>{{ user.name }}</td>
+					<td>{{ user.alias }}</td>
+					<td>{{ user.email }}</td>
+					<td>
+						{% for review in user.authored_reviews.all %}
+							{{ review.id }}
+						{% endfor %}	
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<br>
+	<table>
+		<caption>Authors</caption>
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>name</th>
+				<th>authored_books</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for author in all_authors %}
+				<tr>
+					<td>{{ author.id }}</td>
+					<td>{{ author.name }}</td>
+					<td>
+						{% for book in author.authored_books.all %}
+							{{ book.id }}
+						{% endfor %}
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<br>
+	<table>
+		<caption>Books</caption>
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>title</th>
+				<th>author</th>
+				<th>reviews</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for book in all_books %}
+			<tr>
+				<td><a href="{% url 'reviews:view_book' id=book.id %}"></a>{{ book.id }}</td>
+				<td>{{ book.title }}</td>
+				<td>{{ book.author.name }}</td>
+				<td>
+					{% for review in book.reviews.all %}
+						{{ review.id }}
+					{% endfor %}
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<br>
+	<table>
+		<caption>Reviews</caption>
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>book</th>
+				<th>rating</th>
+				<th>comments</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for review in all_reviews %}
+			<tr>
+				<td>{{ review.id }}</td>
+				<td>{{ review.book.title }}</td>
+				<td>{{ review.rating }}</td>
+				<td>{{ review.comments }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</body>
+</html>

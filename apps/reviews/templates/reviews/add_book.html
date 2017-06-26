@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Adding a Book and Reviews</title>
+</head>
+<body>
+	<header>
+		<h2>CodingDojo Book Reviews</h2>
+		<span>Welcome, {{ request.session.alias }}</span>
+		<a href="{% url 'reviews:index' %}">Home</a>
+		<a href="{% url 'login:logout' %}">Logout</a>
+	</header>
+	<main>
+		<h2>Add a New Book Title and a Review:</h2>
+		<form action="{% url 'reviews:add_book_and_review' %}" method="post">
+			{% csrf_token %}
+			<label for="title">Book Title:
+				<input type="text" name="title">
+			</label>
+			<br>
+			<label for="author">Author:
+				<ul type="none">
+				<li>
+					<label for="choose_author">Choose from the list:
+						<select name="choose_author">
+							<option select value="unselected">Choose author</option>
+							{% for author in all_authors %}
+								<option value="{{ author.name }}">{{ author.name }}</option>
+							{% endfor %}
+						</select>
+					</label>
+				</li>
+				<li>
+					<label for="new_author">Or add a new author:
+						<input type="text" name="new_author">
+					</label>
+				</li>
+				</ul>
+			</label>
+			<br>
+			<label for="review">Review:
+				<textarea name="review" rows="10" cols="45"></textarea>
+			</label>
+			<br>
+			<label for="rating">Rating:
+				<select name="rating">
+					<option selected value="unselected">Choose rating</option>
+					<option value="0">0</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>	
+				</select>
+				stars
+			</label>
+			<br>
+			<input type="submit" value="Add Book and Review">
+			<br>
+			<a href="{% url 'reviews:index' %}"><input type="button" value="Cancel"></a>
+		</form>
+	</main>
+	<footer>
+		{% if messages %}
+			{% for message in messages %}
+				<p>{{ message }}</p>
+			{% endfor %}
+		{% endif %}
+	</footer>
+</body>
+</html>

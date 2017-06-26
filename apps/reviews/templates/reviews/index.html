@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Reviews Index</title>
+</head>
+<body>
+	<header>
+		<h2>CodingDojo Book Reviews</h2>
+		<span>Welcome, {{ request.session.alias }}</span>
+		<a href="{% url 'reviews:add_book' %}">Add Book and Reviews</a>
+		<a href="{% url 'login:logout' %}">Logout</a>		
+	</header>
+	<main>
+		<h3>Recent Book Reviews:</h3>
+		{% for review in recent_reviews %}
+			<div>
+				<p><a href="{% url 'reviews:view_book' id=review.book.id %}">{{ review.book.title }}</a></p>
+				<ul type="none">
+					<li>Rating: {{ review.rating }}</li>
+					<li><a href="{% url 'reviews:view_user' id=review.author.id %">{{ review.author.alias }}</a>says: {{ review.created_at|date:"F j, Y, g:i A" }}</li>
+				</ul>
+			</div>
+		{% endfor %}
+		<h3>Other Books with Reviews:</h3>
+		{% for book in all_books %}
+			<p><a href="{% url 'reviews:view_book' id=book.id %}">{{ book.title }}</a></p>
+		{% endfor %}
+	</main>
+</body>
+</html>

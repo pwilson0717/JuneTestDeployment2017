@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>View Book and Reviews</title>
+</head>
+<body>
+	<header>
+		<h2>CodingDojo Book Reviews</h2>
+		<span>Welcome, {{ request.session.alias }}</span>
+		<a href="{% url 'reviews:index' %}">Home</a>
+		<a href="{% url 'login:logout' %}">Logout</a>
+	</header>
+	<main>
+		<h4>{{ book.title }}</h4>
+		<p>Author: {{ book.author.name }}</p>
+		<div>
+			<h3>Reviews:</h3>
+			{% for review in book.reviews.all %}
+			<div>
+				<hr>
+				<p>Rating: {{ review.rating }}</p>
+				<p><a href="{% url 'reviews:view_user' id=review.author.id %}">{{ review.author.alias }}</a>says: {{ review.comments }}</p>
+				<p>Posted on: {{ review.created_at|date:"F j, Y, g:i A" }}</p>
+				{% if review.author.id == request.session.login_id %}
+					<a href="{% url 'reviews:delete_review' id=review.id %}">delete this review</a>
+				{% endif %}
+			</div>
+			{% endfor %}
+		</div>
+		<div>
+			<h3>Add a Review:</h3>
+			<div>
+				<form action="{% url 'reviews:add_review' %}" method="post">
+					{% csrf_token %}
+					<input type="hidden" name="book_id" vallue="{{ book.id }}">
+					<textarea name="review" rows="10" cols="45"></textarea>
+					<br>
+					<label for="rating">Rating:
+						<select name="rating">
+							<option selected value="unselected">Choose ratings</option>
+							<option value="0">0</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</select>
+						stars
+					</label>
+					<br>
+					<input type="submit" value="Submit Review">
+					<br>
+				</form>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

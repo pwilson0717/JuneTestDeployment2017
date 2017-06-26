@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>User Reviews</title>
+</head>
+<body>
+	<header>
+		<h2>CodingDojo Book Reviews</h2>
+		<span>Welcome, {{ request.session.alias }}</span>
+		<a href="{% url 'reviews:index' %}">Home</a>
+		<a href="{% url 'reviews:add_book' %}">Add Book and Reviews</a>
+		<a href="{% url 'login:logout' %}">Logout</a>
+	</header>
+	<main>
+		<p>User Alias: {{ user.alias }}</p>
+		<p>Name: {{ user.name }}</p>
+		<p>Email: {{ user.email }}</p>
+		<p>Total Reviews: {{ user.authored_reviews.count }}</p>
+		<p>Posted reviews on the following books:</p>
+		<ul type="none">
+			{% for book in books_reviewed %}
+				<li><a href="{% url 'reviews:view_book.' id=book.id %}">{{ book.title }}</a></li>
+			{% endfor %}
+		</ul>
+	</main>
+</body>
+</html>
